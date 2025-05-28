@@ -1,0 +1,78 @@
+# input labels and audio files:
+filepath_inputs:
+  audio: /data/audio
+  label: /data/labels
+  audio_transformed: /data/generated_data/
+  audio_organized_vit: /data/generated_data/transformed
+
+#split characteristics:
+audio_split:
+  split_type: s
+  split_interval: 3
+
+#output label compilation and audio/image files:
+filepath_outputs:
+  audio_splits: /data/generated_data/
+  audio_transformed: /data/generated_data/transformed
+  audio_organized_vit: /data/generated_data/network_input
+  label: /data/generated_data/
+
+# pipeline steps:
+pipeline:
+  compile_labels: False
+  split_audio: False
+  transform:
+    do: True # if one of the configs below is True, then this should also be set as True
+    save_transformed_audio: True
+    save_transformed_image: False
+    save_split_spec_vocalization: True #CORRIGIR ERRO USANDO 2 VARIAVEIS DE SPLITS: PRA AUDIO E PRA SPEC
+    save_window_spec_vocalization: False
+  generate_indices: True
+  dataset_cartography: False
+  organize_data: False
+
+labels:
+  species: ['vire_chiv', 'dend_minu', 'zono_cape', 'basi_culi', 'myio_leuc', 'cycl_guja', 'aden_marm', 'phys_cuvi', 'pita_sulp', 'isch_guen', 'apla_leuc', 'boan_albo']
+  header: True
+  file_type: txt
+  file_sep: tab
+  pos_columns:
+    species: 7
+    start_time: 3
+    end_time: 4
+    start_freq: 5
+    end_freq: 6
+    selection: 0
+    filename: None
+
+audio:
+  file_type: wav
+  sample_rate: 44100
+  file_duration: 60
+
+techniques:
+  selected: ['none', 'vmd', 'towsey', 'spectral_subtraction', 'pcen']
+  vmd:
+    output_type: signal
+    params:
+      alpha: 5000      
+      tau: 0           
+      K: 3               
+      DC: 0             
+      init: 1           
+      tol: 1.0e-7
+  towsey:
+    output_type: spec
+    params:
+      mode: ale
+  nmf:
+    output_type: spec
+    params:
+  spectral_subtraction:
+    output_type: spec
+    params:
+  pcen:
+    output_type: spec
+    params:
+  none:
+    output_type: signal
